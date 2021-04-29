@@ -1,0 +1,59 @@
+plugins {
+  id 'com.gradle.plugin-publish' version '0.14.0'
+  id 'java-gradle-plugin'
+  id 'maven-publish'
+}
+
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+}
+
+
+version = '0.9.0'
+group	= 'it.smartio'
+
+
+dependencies {
+  implementation gradleApi()
+
+  // https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit
+  implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.11.0.202103091610-r'
+}
+
+
+sourceSets {
+  main {
+    java {
+      exclude '**/*Mojo.java'
+    }
+  }
+}
+
+
+gradlePlugin {
+  plugins {
+    "git-version" {
+      id = 'it.smartio.gradle.version'
+      implementationClass = 'it.smartio.gradle.GitPlugin'
+    }
+  }
+}
+
+
+
+// Configured to publish your plugin to the plugin portal
+pluginBundle {
+  website = 'https://www.tol.info'
+  vcsUrl = 'https://github.com/tol-smartio/git-version.git'
+
+  plugins {
+    "git-version" {
+      displayName = 'Version from GIT'
+      description = 'Glade plugin getting version from GIT annotations'
+      tags = ['git', 'version']
+      version = '0.9.0'
+    }
+  }
+}
